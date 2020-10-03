@@ -27,5 +27,17 @@ public class DressCategoryDao {
 		return dressCategory;
 		
 	}
+	public int updateDressCategory(DressCategory dressCategory) {
+		String sql="update DressCategoryMaster set dressCategoery= ? where categoryId=?";
+		int result = jdbcTemplate.update(sql,dressCategory.getDressCategoery(),dressCategory.getCategoryId());
+		return result ;
+		
+	}
+	public int deleteDressCategory(int categoryId) {
+		String sql="delete from DressCategoryMaster where categoryId=?";
+		int result = jdbcTemplate.update(sql,categoryId);
+		return result ;
+		
+	}
 	
 }
