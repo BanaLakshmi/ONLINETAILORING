@@ -26,5 +26,15 @@ public class DressKindDao {
 		return dressKind;
 		
 	}
+	public int updateDressKind(DressKind dressKind) {
+		String sql="update DressKindMaster set dressKind= ? where dressKindId=?";
+		int result = jdbcTemplate.update(sql,dressKind.getDressKind(),dressKind.getDressKindId());
+		return result ;
+		
+	}
+	public int deleteDressKind(int dressKindId) {
+		String sql="delete from DressKindMaster where dressKindId=?";
+		int result = jdbcTemplate.update(sql,dressKindId);
+		return result ;
 
 }
