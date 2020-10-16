@@ -1,18 +1,20 @@
 create table Resolution(
-resolutionId varchar(10) primary key,
+resolutionId int primary key auto_increment,
 resolutionDate date,
 adminId varchar(30),
 resolution varchar(100),
 requestId varchar(10),
-Foreign key (requestId) references Help(requestId)
+Foreign key (requestId) references Help(requestId),
+Foreign key (adminId) references AdminMaster(adminId)
 );
 
 create table FeedbackQuestion(
-questionId int primary key,
+questionId int primary key auto_increment,
 question varchar(45)
 );
 
 create table Feedback(
+ feedbackId int primary key auto_increment,
 feedbackDate date,
 orderId varchar(10),
 userId varchar(10),
