@@ -1,0 +1,35 @@
+ 
+
+CREATE TABLE Pattern(patternId int PRIMARY KEY, 
+pattern varchar(200),  
+cost double);
+          
+      
+
+
+
+
+CREATE TABLE Tailor(tailorId int AUTO_INCREMENT PRIMARY KEY, 
+shopName varchar(150), 
+address varchar(150) , 
+contactNo varchar(10), 
+workingHours int, 
+courier boolean);
+
+
+
+ CREATE TABLE TopMeasurement(topId int AUTO_INCREMENT PRIMARY KEY, 
+ patternId int,
+ fabric varchar(100),   
+ materialType varchar(100), 
+ duration int, 
+ topLength double, 
+ amount double,
+ neck double, 
+ topWaist double,  
+ chest double, 
+ shoulderLength double,
+ FOREIGN KEY(patternId) references Pattern(patternId)
+ );
+      
+     
