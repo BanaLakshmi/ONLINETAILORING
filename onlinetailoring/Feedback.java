@@ -1,6 +1,6 @@
-import java.sql.Date;
+import java.util.Date;
 
-public class feedback {
+public class Feedback {
 	private Date feedbackDate;
 	private int orderId;
 	private String userId, questionId, answer;
@@ -11,6 +11,14 @@ public class feedback {
 
 	public void setFeedbackDate(Date feedbackDate) {
 		this.feedbackDate = feedbackDate;
+	}
+ 	public String getFeedbackDate1() {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		return sdf.format(this.feedbackDate);
+	}
+	public void setFeedbackDate1(String feedbackDate) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+	    this.feedbackDate = sdf.parse(feedbackDate);
 	}
 
 	public int getOrderId() {
@@ -45,12 +53,7 @@ public class feedback {
 		this.answer = answer;
 	}
 
-	public feedback() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public feedback(Date feedbackDate, int orderId, String userId, String questionId, String answer) {
+	public Feedback(Date feedbackDate, int orderId, String userId, String questionId, String answer) {
 		super();
 		this.feedbackDate = feedbackDate;
 		this.orderId = orderId;
@@ -58,4 +61,12 @@ public class feedback {
 		this.questionId = questionId;
 		this.answer = answer;
 	}
+
+	public Feedback() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	
 }
+
