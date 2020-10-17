@@ -1,45 +1,36 @@
 package com.mfrp.onlinetailoring;
-
-import java.sql.Date;
 import java.util.List;
+import java.util.ArrayList;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 public class UserDao {
-	
-	
-	
+	HibernateTemplate ht;  
 
-	public JdbcTemplate getJdbcTemplte() {
-		return jdbcTemplate;
+public HibernateTemplate getHt() {
+		return ht;
 	}
+	public void setHt(HibernateTemplate ht) {
+		this.ht = ht;
+	}
+ //method to save User
+	public void saveUser(User user){  
+		ht.save(user);  
+	}  
 
-	public void setJdbcTemplte(JdbcTemplate jdbcTempalte) {
-		this.jdbcTemplate = jdbcTemplate;
-	}
-
-	public int createUser(User user) {
-		String sql = "insert into UserMaster values(?,?,?,?,?,?,?,?,?,?)";
-		int result = jdbcTemplate.update(sql,user.getUserId(),user.getPassword(),user.getFirstName(),user.getLastName(),user.getDob(),
-				user.getGender(),user.getContactNo(),user.getEmail(),user.getUserCatgory(),user.getSecretQuestions());
-		return result;
-
-	}
-	public int updateUser(User user) {
-		String sql="update UserMaster set password=?,firstName=?,lastName=?,dob=?,gender=?,contactNo=?,email=?,userCategory=?,secretQuestions=? where userId=? ";
-		int result = jdbcTemplate.update(sql,user.getPassword(),user.getFirstName(),user.getLastName(),user.getDob(),
-				user.getGender(),user.getContactNo(),user.getEmail(),user.getUserCatgory(),user.getSecretQuestions(),user.getUserId());
-		return result ;
-		
-	}
-	public List <User> readUser() {
-		String sql= "select* from UserMaster";
-		List<User>user=jdbcTemplate.query(sql, new UserRowMapper());
-		return user;
-		
-	}
-	public int deleteUser(int userId) {
-		String sql="delete from UserMaster where adminId=?";
-		int result = jdbcTemplate.update(sql,userId);
-		return result ;
-
+//method to update User
+	public void updateUser(User user){  
+		ht.update(user);  
+	} 
+//method to delete User 
+	public void deleteUser(User user){  
+		ht.delete(user);  
+	}   
+//method to return  User given the userId  
+	public User getByUserId(int userId){  
+		User user=(User)ht.get(User.class,userId);  
+		return user; 
 }
+	//method to return all Users
+	public List<> getUsers()
+	{}
 }
