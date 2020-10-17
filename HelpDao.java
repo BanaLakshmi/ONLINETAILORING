@@ -36,6 +36,13 @@ public HibernateTemplate getHt() {
 		Help help=(Help)ht.get(Help.class,requestId);  
 		return help; 
 }
+	//method to return all Helps
+	public List<Help> getHelps(){  
+		List<Help> list=new ArrayList<>();  
+		list=ht.loadAll(Help.class);  
+		return list;  
+	}  
+	
 } 
 
 
