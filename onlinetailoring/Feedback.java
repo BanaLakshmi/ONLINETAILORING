@@ -1,9 +1,14 @@
 import java.util.Date;
 
+import javax.persistence.Entity;
+
+@Entity
 public class Feedback {
+	@Id
+	private String userId;
 	private Date feedbackDate;
 	private int orderId;
-	private String userId, questionId, answer;
+	private String questionId, answer;
 
 	public Date getFeedbackDate() {
 		return feedbackDate;
