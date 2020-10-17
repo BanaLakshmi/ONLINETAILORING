@@ -31,6 +31,9 @@ public HibernateTemplate getHt() {
 		return user; 
 }
 	//method to return all Users
-	public List<> getUsers()
-	{}
-}
+	
+	public List<User> getUsers(){  
+		List<User> list=new ArrayList<>();  
+		list=ht.loadAll(User.class);  
+		return list;  
+	}  
