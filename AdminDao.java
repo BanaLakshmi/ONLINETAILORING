@@ -37,6 +37,13 @@ public HibernateTemplate getHt() {
 		Admin admin=(Admin)ht.get(Admin.class,adminId);  
 		return admin; 
 }
+	//method to return all Admins
+	public List<Admin> getAdmins(){  
+		List<Admin> list=new ArrayList<>();  
+		list=ht.loadAll(Admin.class);  
+		return list;  
+	}  
+	
 } 
 
 
