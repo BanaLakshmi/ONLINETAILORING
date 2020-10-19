@@ -9,11 +9,10 @@ import java.util.Date;
 @Table(name="Resolution")
 public class Resolution {
 	@Id @GeneratedValue
-	private int requestId;
 	private int resolutionId;
 	private Date resolutionDate;
-	private String adminId;
-	private String resolution;
+	private int adminId;
+	private String resolution,requestId;
 	
 	@Override
 	public String toString() {
@@ -32,11 +31,11 @@ public class Resolution {
 		this.resolutionId = resolutionId;
 	}
 
-	public int getRequestId() {
+	public String getRequestId() {
 		return requestId;
 	}
 
-	public void setRequestId(int requestId) {
+	public void setRequestId(String requestId) {
 		this.requestId = requestId;
 	}
 
@@ -57,11 +56,11 @@ public class Resolution {
 	}
 
 
-	public String getAdminId() {
+	public int getAdminId() {
 		return adminId;
 	}
 
-	public void setAdminId(String adminId) {
+	public void setAdminId(int adminId) {
 		this.adminId = adminId;
 	}
 
@@ -79,7 +78,7 @@ public class Resolution {
 	}
 
 
-	public Resolution(int resolutionId, int requestId, Date resolutionDate, String adminId, String resolution) {
+	public Resolution(int resolutionId, String requestId, Date resolutionDate, int adminId, String resolution) {
 		super();
 		this.resolutionId = resolutionId;
 		this.requestId = requestId;
