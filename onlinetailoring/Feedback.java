@@ -1,3 +1,8 @@
+
+
+import java.text.ParseException;
+
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -5,25 +10,34 @@ import javax.persistence.Entity;
 @Entity
 public class Feedback {
 	@Id
-	private String userId;
+	private int feedbackId;
 	private Date feedbackDate;
-	private int orderId;
-	private String questionId, answer;
+	private int orderId,userId, questionId;
+	private String  answer;
+	
+	
+	public int getFeedbackId() {
+		return feedbackId;
+	}
+	public void setFeedbackId(int feedbackId) {
+		this.feedbackId = feedbackId;
+	}
 
 	public Date getFeedbackDate() {
 		return feedbackDate;
 	}
-
-	public void setFeedbackDate(Date feedbackDate) {
-		this.feedbackDate = feedbackDate;
-	}
- 	public String getFeedbackDate1() {
+	public String getFeedbackDate1() {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.format(this.feedbackDate);
 	}
 	public void setFeedbackDate1(String feedbackDate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 	    this.feedbackDate = sdf.parse(feedbackDate);
+	}
+
+
+	public void setFeedbackDate(Date feedbackDate) {
+		this.feedbackDate = feedbackDate;
 	}
 
 	public int getOrderId() {
@@ -34,19 +48,19 @@ public class Feedback {
 		this.orderId = orderId;
 	}
 
-	public String getUserId() {
+	public int getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
+	public void setUserId(int userId) {
 		this.userId = userId;
 	}
 
-	public String getQuestionId() {
+	public int getQuestionId() {
 		return questionId;
 	}
 
-	public void setQuestionId(String questionId) {
+	public void setQuestionId(int questionId) {
 		this.questionId = questionId;
 	}
 
@@ -58,7 +72,7 @@ public class Feedback {
 		this.answer = answer;
 	}
 
-	public Feedback(Date feedbackDate, int orderId, String userId, String questionId, String answer) {
+	public Feedback(Date feedbackDate, int orderId, int userId, int questionId, String answer) {
 		super();
 		this.feedbackDate = feedbackDate;
 		this.orderId = orderId;
@@ -71,6 +85,7 @@ public class Feedback {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 
 	
 }
