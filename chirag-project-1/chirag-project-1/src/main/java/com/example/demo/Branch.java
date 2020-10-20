@@ -40,7 +40,7 @@ public class Branch {
 	}
 	@Override
 	public String toString() {
-		return "Branch [bid=" + bid + ", bname=" + bname + ", bcity=" + bcity + "]";
+		return "Branch [bid=" + bid + ", bname is" + bname + ", bcity=" + bcity + "]";
 	}
 	
 }
