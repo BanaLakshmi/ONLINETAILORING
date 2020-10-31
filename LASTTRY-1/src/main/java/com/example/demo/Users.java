@@ -20,6 +20,7 @@ public class Users {
 	private String contactNo;
 	private String password;
 	private String category;
+
 	public String getUserId() {
 		return userId;
 	}
@@ -56,6 +57,8 @@ public class Users {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	
 	public String getContactNo() {
 		return contactNo;
 	}

@@ -1,13 +1,22 @@
 package com.example.demo;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -17,125 +26,386 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
 @Controller
 public class UserController {
-   
+
 	@InitBinder
 	public void init(WebDataBinder binder) {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(new SimpleDateFormat("yyyy-MM-dd"), true));
 	}
+
 	@RequestMapping("/")
-	public ModelAndView home() {
-		ModelAndView mv=new ModelAndView();
+	public ModelAndView home(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("Home");
 		return mv;
 	}
+
 	@RequestMapping("/Login")
 	public ModelAndView login() {
-		ModelAndView mv=new ModelAndView();
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("Login");
 		return mv;
 	}
+
 	@RequestMapping("/SignUp")
-	public ModelAndView signUp() {
-		ModelAndView mv=new ModelAndView();
+	public ModelAndView signUp(HttpSession session) {
+		ModelAndView mv = new ModelAndView();
 		mv.setViewName("SignUp");
 		return mv;
 	}
-	
-	
-	
-	@RequestMapping("/add")
-	public ModelAndView add(Users users,HttpSession session)
-	{
-		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
-	    UsersDAO udao=(UsersDAO) ctx.getBean("udao");		
-	    Users user =  udao.create(users);
-	    ModelAndView mv=new ModelAndView();
-	    if (user==null)
-	    {mv.setViewName("failure");
-	    }
-	    else
-	    	mv.setViewName("question");		
-		   session.setAttribute("user", user);	
-	    
-		return mv;
-		
-}
-	
-	@RequestMapping("/savequestion")
-	public ModelAndView addSecretQuestions(SecretQuestions secretQuestions) {
-		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
-		SecretQuestionsDAO sQdao=(SecretQuestionsDAO) ctx.getBean("sQdao");
-		SecretQuestions secretQuestion= sQdao.saveSecretQuestions(secretQuestions);
-		ModelAndView mv=new ModelAndView();
-		if(secretQuestion == null) {
-			
-			mv.setViewName("question");
-	        mv.addObject("message","Failed To Register");
-			
+
+	@RequestMapping("/additionalDetails")
+	public ModelAndView additionalDetails(HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
 		}
-		else {
-			mv.setViewName("Login");
-		}
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("additionaldetails");
 		return mv;
 	}
 	
-	
-	@RequestMapping("/verify")
-   public ModelAndView validate(String userId, String password, HttpSession session) throws NullPointerException,SQLException {
-      
-        ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
-		UsersDAO udao=(UsersDAO) ctx.getBean("udao");
-	    
-		ModelAndView mv=new ModelAndView();
-		
-        Users user = udao.read(userId);
-    
-             if(user==null)
-       {
-        	mv.setViewName("Login");
-        	mv.addObject("message","User Id Incorrect");
-        }
-         
-       else 
-       {  if(password.equals(user.getPassword()))
-       	   {
-       	         mv.setViewName(user.getCategory());
-       	         session.setAttribute("user", user);
-        	         
-        	         //return new ModelAndView("success");
+	@RequestMapping("tailordetails")
+	public ModelAndView tailordetails(String tailorId,HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		System.out.println(tailorId);
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		TailorDao tailorDao = (TailorDao) ctx.getBean("tailordao");
+		TailorDressDAO tailorDressdao = (TailorDressDAO) ctx.getBean("tailorDressdao");
+		FeedbackDAO feedbackdao = (FeedbackDAO) ctx.getBean("feedbackDao");
+		List<Feedback> feedbackList = feedbackdao.read().stream()
+				.filter(f -> f.getTailorId().equalsIgnoreCase(tailorId)).collect(Collectors.toList());
+		Tailor tailor = tailorDao.getById(tailorId);
+		List<TailorDress> tailorDresses = tailorDressdao.getTailorDressByTailorId(tailorId);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("tailordetails");
+		mv.addObject("tailor", tailor);
+		mv.addObject("tailorDresses", tailorDresses);
+		mv.addObject("feedbackList", feedbackList);
+		return mv;
+	}
 
-       	   }
-          else
-        	  mv.setViewName("Login");
-            mv.addObject("message","password Incorrect");
-        }
-        return mv;
-       
-   }
+	@RequestMapping("/typeofdresses")
+	public ModelAndView dresstype(HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		ModelAndView mv = new ModelAndView();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		DressCategoryDAO dressCategoryDAO = (DressCategoryDAO) ctx.getBean("dCdao");
+		List<DressCategory> dressCategorylist = dressCategoryDAO.getDressCategories();
+		mv.addObject("dressCategorylist", dressCategorylist);
+		mv.setViewName("typeofdresses");
+		return mv;
+	}
+
+	@RequestMapping("/add")
+	public ModelAndView add(Users users, HttpSession session) {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		UsersDAO udao = (UsersDAO) ctx.getBean("udao");
+		Users userDb = udao.getByIdOrEmail(users.getUserId(),users.getEmail());
+		ModelAndView mv = new ModelAndView();
+		if (userDb == null) {
+			Users user = udao.create(users);
+			if (user == null) {
+				mv.setViewName("failure");
+			} else
+				mv.setViewName("question");
+			session.setAttribute("user", user);
+		} else {
+			mv.setViewName("SignUp");
+			mv.addObject("message", "User Id or EmailId already exist please try with a new one");
+		}
+
+		return mv;
+
+	}
+
+	@RequestMapping("/savequestion")
+	public ModelAndView addSecretQuestions(SecretQuestions secretQuestions,HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		SecretQuestionsDAO sQdao = (SecretQuestionsDAO) ctx.getBean("sQdao");
+		SecretQuestions secretQuestion = sQdao.saveSecretQuestions(secretQuestions);
+		ModelAndView mv = new ModelAndView();
+		if (secretQuestion == null) {
+
+			mv.setViewName("question");
+			mv.addObject("message", "Failed To Register");
+
+		} else {
+			mv.setViewName("Login");
+			mv.addObject("message", "New user created successfully");
+		}
+		return mv;
+	}
+
+	@RequestMapping("/verify")
+	public ModelAndView validate(String userId, String password, HttpSession session)
+			throws NullPointerException, SQLException {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		UsersDAO udao = (UsersDAO) ctx.getBean("udao");
+
+		ModelAndView mv = new ModelAndView();
+
+		Users user = udao.read(userId);
+
+		if (user == null) {
+			mv.setViewName("Login");
+			mv.addObject("message", "User Id not present");
+		}
+
+		else {
+			if (password.equals(user.getPassword())) {
+				mv.setViewName(user.getCategory());
+				session.setAttribute("user", user);
+			} else
+				mv.setViewName("Login");
+			mv.addObject("message", "Password not matching");
+		}
+		return mv;
+
+	}
+
 	@RequestMapping("/resetpass")
 	public String update() {
 		return "resetq";
 	}
-//	@RequestMapping("passreset")
-//	public ModelAndView change(String userId,String a1, String a2,String a3,HttpSession session ) throws SQLException {
-//		ModelAndView mv=new ModelAndView();
-//		 ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
-//			UsersDAO udao=(UsersDAO) ctx.getBean("udao");
+
+	@RequestMapping("/fetchUserId")
+	public String fetchUserId() {
+		return "fetchUserId";
+	}
+
+	@RequestMapping("passreset")
+	public ModelAndView change(String userId, String a1, String a2, String a3, HttpSession session)
+			throws SQLException {
+		ModelAndView mv = new ModelAndView();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		SecretQuestionsDAO sQdao = (SecretQuestionsDAO) ctx.getBean("sQdao");
+
+		SecretQuestions secretQuestions = sQdao.read(userId, a1, a2, a3);
+		if (secretQuestions == null) {
+			mv.setViewName("resetq");
+			mv.addObject("message", "Invalid Answers");
+		} else {
+			session.setAttribute("userId", userId);
+			mv.setViewName("passwordreset");
+		}
+		return mv;
+	}
+
+	@RequestMapping("UserIdDisplay")
+	public ModelAndView UserIdDisplay(String email, String a1, String a2, String a3, HttpSession session)
+			throws SQLException {
+		ModelAndView mv = new ModelAndView();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		SecretQuestionsDAO sQdao = (SecretQuestionsDAO) ctx.getBean("sQdao");
+
+		SecretQuestions secretQuestions = sQdao.readUserId(email, a1, a2, a3);
+		if (secretQuestions == null) {
+			mv.setViewName("fetchUserId");
+			mv.addObject("message", "Invalid Answers");
+		} else {
+			session.setAttribute("email", email);
+			mv.setViewName("Login");
+			mv.addObject("message", "Your User Id is :" + secretQuestions.getUserId());
+		}
+		return mv;
+	}
+
+	@RequestMapping("modifypass")
+	public ModelAndView modifypass(String password, String userId,HttpSession session) {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		UsersDAO udao = (UsersDAO) ctx.getBean("udao");
+
+		ModelAndView mv = new ModelAndView();
+
+		int no = udao.updatePassword(password, userId);
+		if (no == 1) {
+			mv.setViewName("Login");
+			mv.addObject("message", "Your Password has been updated successfully.");
+		} else {
+			mv.setViewName("passwordreset");
+			mv.addObject("message", "Unable To Change Password");
+		}
+		return mv;
+	}
+
+	@RequestMapping("/logout")
+
+	public String logout(HttpSession session) {
+		session.invalidate();
+		return "Login";
+	}
+
+	@RequestMapping("/searchTailor")
+	public ModelAndView searchTailor(HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		ModelAndView mv = new ModelAndView();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		DressCategoryDAO dressCategoryDAO = (DressCategoryDAO) ctx.getBean("dCdao");
+		List<DressCategory> dressCategorylist = dressCategoryDAO.getDressCategories();
+		mv.addObject("dressCategorylist", dressCategorylist);
+		mv.setViewName("searchtailor");
+		return mv;
+	}
+
+	@RequestMapping("getDressKindByCategory")
+	@ResponseBody
+	public List<String> getDressKindByCategory(int categoryId) {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		DressTypeDAO dressTypeDAO = (DressTypeDAO) ctx.getBean("dTdao");
+		List<String> dressKind = dressTypeDAO.getDressKindByCategoryId(categoryId);
+		return dressKind.stream().distinct().collect(Collectors.toList());
+	}
+
+	@RequestMapping("getDressTypeByDressKindNCategory")
+	@ResponseBody
+	public List<String> getDressTypeByDressKind(String dressKind, int categoryId) {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		DressTypeDAO dressTypeDAO = (DressTypeDAO) ctx.getBean("dTdao");
+		List<String> dressType = dressTypeDAO.getDressTypeByDressKindNCategory(dressKind, categoryId);
+		return dressType.stream().distinct().collect(Collectors.toList());
+	}
+
+	@RequestMapping("submittypeOfDresses")
+	public ModelAndView addStudent(String tailorId, Integer categoryId, String dressType, String dressKind, Double cost,
+			HttpServletRequest request,HttpSession session) throws IOException, ServletException {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+//	int studentId=Integer.parseInt(request.getParameter("studentId"));
+//	String fullName=request.getParameter("fullName");
+		Part part = request.getPart("pattern");
+		InputStream inputStream = part.getInputStream();
+		int len = inputStream.available();
+		byte pattern[] = new byte[len];
+		inputStream.read(pattern);
+		TailorDress tailorDress = new TailorDress(tailorId, categoryId, dressKind, dressType, pattern, cost);
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		TailorDressDAO tailorDressdao = (TailorDressDAO) ctx.getBean("tailorDressdao");
+		tailorDressdao.saveTailorDress(tailorDress);
+		System.out.println(len);
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("typeofdresses");
+		mv.addObject("message", "Data has been uploaded successfully");
+		return mv;
+
+	}
+
+	@RequestMapping("saveadditionaldetails")
+	public ModelAndView saveadditionaldetails(Tailor tailor, HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		TailorDao tailordao = (TailorDao) ctx.getBean("tailordao");
+		Tailor tailorDb = tailordao.getById(tailor.getTailorId());
+		if (tailorDb == null) {
+			tailordao.saveTailor(tailor);
+		} else {
+			tailordao.updateTailor(tailor);
+		}
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("additionaldetails");
+		mv.addObject("message", "Your details has been updated successfully");
+		return mv;
+
+	}
+
+	@RequestMapping("getDeliveryAreas")
+	@ResponseBody
+	public List<String> getDeliveryAreas(int categoryId, String dressKind, String dressType) {
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		TailorDao tailorDao = (TailorDao) ctx.getBean("tailordao");
+		List<String> deliveryAreas = tailorDao.getDeliveryArea(categoryId, dressKind, dressType);
+		List<String> delAreas = new ArrayList<>();
+		for (String deliveryArea : deliveryAreas) {
+			delAreas.addAll(Arrays.asList(deliveryArea.split(",")));
+		}
+		return delAreas.stream().distinct().collect(Collectors.toList());
+	}
+
+	@RequestMapping("/tailorSearch")
+	public ModelAndView tailorSearch(Integer categoryId, String dressType, String dressKind, String delArea,HttpSession session) {
+		if(session.getAttribute("user")==null) {
+			return sendToLogin();
+		}
+		ModelAndView mv = new ModelAndView();
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+		TailorDressDAO tailorDressdao = (TailorDressDAO) ctx.getBean("tailorDressdao");
+		List<String> tailorIds = tailorDressdao.read(categoryId, dressType, dressKind, delArea);
+		if (tailorIds == null) {
+			mv.setViewName("searchtailor");
+			mv.addObject("message", "No tailor");
+		} else {
+			mv.setViewName("searchtailor");
+			mv.addObject("tailorIds", tailorIds);
+		}
+
+		return mv;
+	}
+	
+	private ModelAndView sendToLogin() {
+		ModelAndView mv = new ModelAndView();
+			mv.setViewName("Login");
+		return mv;
+	}
+
+//@RequestMapping("/savequestion")
+//public ModelAndView addSecretQuestions(SecretQuestions secretQuestions) {
+//	ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+//	SecretQuestionsDAO sQdao=(SecretQuestionsDAO) ctx.getBean("sQdao");
+//	SecretQuestions secretQuestion= sQdao.saveSecretQuestions(secretQuestions);
+//	ModelAndView mv=new ModelAndView();
+//	if(secretQuestion == null) {
 //		
-//		SecretQuestions secretQuestions =sQdao.read(userId, a1, a2, a3);
-//		if(secretQuestions==null)
-//		{
-//			mv.setViewName("resetq");
-//			mv.addObject("message", "Invalid Answers");
-//		}
-//		else {
-//			session.setAttribute("userId", userId);
-//			mv.setViewName("passwordreset");
-//		}
-//		return mv;
+//		mv.setViewName("question");
+//        mv.addObject("message","Failed To Register");
+//		
 //	}
+//	else {
+//		mv.setViewName("Login");
+//	}
+//	return mv;
+//}
+
+//@RequestMapping("/tailorUpdate")
+
+//public String home(Model model)
+//{
+//	ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+//	DressCategoryDAO dressCategoryDAO = (DressCategoryDAO) ctx.getBean("dCdao");
+//	List<Department> departments = ddao.read();
+//	model.addAttribute("departments",departments);
+//	return "index";
+//}
+//@RequestMapping("getDressKindByCategory")
+//@ResponseBody
+//public List<String> getDressKindByCategory(int categoryId)
+//{
+//	ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+//	DressTypeDAO dressTypeDAO = (DressTypeDAO) ctx.getBean("dTdao");
+//	List<String> dressKind = dressTypeDAO.getDressKindByCategoryId(categoryId);
+//	return dressKind;
+//}
+
+//@RequestMapping("/getDressKindByCategory")
+//public List<DressType> getDressKindByCategory(@RequestParam int categoryId)
+//{
+//	ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
+//	DressTypeDAO dressTypeDAO = (DressTypeDAO) ctx.getBean("dTdao");
+//	return dressTypeDAO.getDressKind(categoryId);
+//}
+
 //	
 
 //	@RequestMapping("/login")
@@ -266,5 +536,5 @@ public class UserController {
 //		fdao.create(feedback);
 //		return home3();
 //	}
-	
+
 }

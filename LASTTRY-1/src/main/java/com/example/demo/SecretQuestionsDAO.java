@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component("sQdao")
 public class SecretQuestionsDAO {
-	private static final String ScrollableResults = null;
+	
 	HibernateTemplate ht;  
 
 
@@ -49,16 +49,32 @@ public class SecretQuestionsDAO {
 		list=ht.loadAll(SecretQuestions.class);  
 		return list;  
 	}  
-//	public SecretQuestions  read (String userId,String a1,String a2,String a3)
-//	{
-//		Session session = ht.getSessionFactory().openSession();
-//		Query query = session.createQuery("SELECT q From  SecretQuestions q WHERE q.userId=:userId AND q.a1=:a1 AND q.a2=:a3 AND q.a3=:a3");
-//		query.setString(1, userId);
-//		query.setString(2, a1);
-//		query.setString(3, a2);
-//		query.setString(4, a3);
-//	
-//		return query;
-//	}
-	
+	public SecretQuestions  read (String userId,String a1,String a2,String a3)
+	{
+		Session session = ht.getSessionFactory().openSession();
+		Query query = session.createQuery("SELECT q From  SecretQuestions q WHERE q.userId=? AND q.a1=? AND q.a2=? AND q.a3=?");
+		query.setParameter(0, userId);
+		query.setParameter(1, a1);
+		query.setParameter(2, a2);
+		query.setParameter(3, a3);
+		List<SecretQuestions>  s = query.list();
+		if(s==null || s.size()==0) {
+			return null;
+		}
+	return s.get(0);
+	}
+	public SecretQuestions  readUserId (String email,String a1,String a2,String a3)
+	{
+		Session session = ht.getSessionFactory().openSession();
+		Query query = session.createQuery("SELECT q From  SecretQuestions q WHERE q.email=? AND q.a1=? AND q.a2=? AND q.a3=?");
+		query.setParameter(0, email);
+		query.setParameter(1, a1);
+		query.setParameter(2, a2);
+		query.setParameter(3, a3);
+		List<SecretQuestions>  s = query.list();
+		if(s==null || s.size()==0) {
+			return null;
+		}
+	return s.get(0);
+	}
 }

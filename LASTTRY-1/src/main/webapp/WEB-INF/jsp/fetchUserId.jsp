@@ -10,14 +10,12 @@
 <body>
 <div class="wrapper">
 <div class="title">
-      Registration Successful -- Answer this Questions
+      Enter Details
     </div>
 <div class="form">
-<form method="get" action="savequestion">
+<form method="get" action="UserIdDisplay">
 <div class="inputfield">
-<label>User ID</label><input type=text name=userId id=userId class="input" value="${user.userId }" required /></div>
-<div class="inputfield">
-<label>Email</label><input type=text name=email id=email class="input" value="${user.email }" required /></div>
+<label>Email Id</label><input type=text name=email id=email class="input"  required /></div>
 <div class="inputfield">
 <label>Your First School ? :</label><input type=text name=a1 id=a1 class="input" required/></div>
 <div class="inputfield">
@@ -25,11 +23,13 @@
 <div class="inputfield">
 <label>Your first friend ? :</label><input type=text name=a3 id=a3 class="input" required/></div>
 <div class="inputfield">
-<input type=submit value="Register" class="btn" />
+<input type=submit value="Verify" class="btn" />
 </div>
+
 </form>
 </div>
 <br/>
+<p style="color:red;">${message }</p><br>
 </div>
 </body>
 </html>

@@ -28,7 +28,7 @@
 </div>
 <br/>
 <p style="color:red;">${message }</p><br>
- <p style="color:blue;">Forgot UserId<a href="">Click here</a></p><br>
+ <p style="color:blue;">Forgot UserId<a href="fetchUserId">Click here</a></p><br>
  <p style="color:blue;">Forgot Password<a href="resetpass">Click here</a></p><br>
  <br>
 <p style="color:blue;">Not Registered Click <a href="SignUp">SignUp</a></p>

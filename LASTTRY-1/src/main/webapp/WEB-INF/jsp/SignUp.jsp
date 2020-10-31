@@ -25,9 +25,11 @@
 <div class="inputfield">
 <label>Last Name</label><input type=text name=lastName id=lastName class="input" required /></div>
 <div class="inputfield">
+<label>Contact Number</label><input type=text name=contactNo id=contactNo class="input" required /></div>
+<div class="inputfield">
 <label>Date of Birth</label><input type="date" name=dob id=dob class="input" required /></div>
 <div class="inputfield">
-<label>Gender</label><div class="custom_select"><select name="gender" id="gender">
+<label>Gender</label><div class="custom_select"><select name="gender" id="gender" required>
               <option value="">Select</option>
               <option value="male">Male</option>
               <option value="female">Female</option>
@@ -35,14 +37,12 @@
             </div>
             </div>
 <div class="inputfield">
-<label>Contact Number</label><input type=text name=contactNumber id=contactNumber class="input" required /></div>
-<div class="inputfield">
 <label>Email</label><input type=text name=email id=email class="input" required /></div>
 <div class="inputfield">
-<label>Category</label><div class="custom_select"><select name="category" id="category">
+<label>Category</label><div class="custom_select"><select name="category" id="category" required>
               <option value="">Select</option>
               <option value="customer">Customer</option>
-              <option value="talior">Tailor</option>
+              <option value="tailor">Tailor</option>
             </select>
             </div>
             </div>
@@ -54,6 +54,7 @@
 <br>
 
 <p style="color:blue;">Already Registered Click <a href="Login">  Login</a></p>
+<p style="color:red;">${message}</p><br>
 </div>
 </body>
 </html>

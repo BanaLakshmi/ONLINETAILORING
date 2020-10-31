@@ -33,7 +33,11 @@ xmlns:context="http://www.springframework.org/schema/context"
    		<list>
    			<value>com.example.demo.Users</value>
    			<value>com.example.demo.SecretQuestions</value>
-   			
+   			<value>com.example.demo.DressType</value>
+   			<value>com.example.demo.DressCategory</value>
+   			<value>com.example.demo.TailorDress</value>
+   			<value>com.example.demo.Tailor</value>
+   			<value>com.example.demo.Feedback</value>
    		</list>
    		
    	</property>
@@ -62,6 +66,21 @@ xmlns:context="http://www.springframework.org/schema/context"
 		<property name="ht" ref="ht"></property>
 	</bean>
 	<bean id="sQdao" class="com.example.demo.SecretQuestionsDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="dTdao" class="com.example.demo.DressTypeDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="dCdao" class="com.example.demo.DressCategoryDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="tailorDressdao" class="com.example.demo.TailorDressDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="tailordao" class="com.example.demo.TailorDao">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="feedbackDao" class="com.example.demo.FeedbackDAO">
 		<property name="ht" ref="ht"></property>
 	</bean>
    <!-- <bean id="bookingDAO" class="com.example.demo.BookingDAO">
