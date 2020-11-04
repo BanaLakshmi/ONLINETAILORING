@@ -1,4 +1,4 @@
-use tailor;
+
 CREATE TABLE `adminmaster` (
   `adminId` varchar(30) DEFAULT NULL,
   `password` varchar(10) DEFAULT NULL
