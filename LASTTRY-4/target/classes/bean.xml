@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns = "http://www.springframework.org/schema/beans"
+xmlns:context="http://www.springframework.org/schema/context"
+   xmlns:tx="http://www.springframework.org/schema/tx"
+   xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation = "http://www.springframework.org/schema/beans
+   http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+   http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context.xsd
+   http://www.springframework.org/schema/tx
+   http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+	<tx:annotation-driven/>
+	<!--  <context:component-scan base-package="com.example.demo" /> -->
+	
+   <bean id = "dmds" class = "org.springframework.jdbc.datasource.DriverManagerDataSource">
+   	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+      <property name = "url" value = "jdbc:mysql://localhost:3306/jag"/>
+      <property name="username" value="root" />
+      <property name="password" value="root" />
+   </bean>
+   
+   <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+   	<property name="dataSource" ref="dmds" />
+   	<property name="hibernateProperties">
+   		<props>
+   			<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+   			<prop key="hibernate.show_sql">true</prop>
+   		</props>
+   	</property>
+   	<property name="annotatedClasses">
+   		<list>
+   			<value>com.example.demo.Users</value>
+   			<value>com.example.demo.SecretQuestions</value>
+   			<value>com.example.demo.DressType</value>
+   			<value>com.example.demo.DressCategory</value>
+   			<value>com.example.demo.TailorDress</value>
+   			<value>com.example.demo.Tailor</value>
+   			<value>com.example.demo.Feedback</value>
+   			<value>com.example.demo.Admin</value>
+   			<value>com.example.demo.Order</value>
+   			<value>com.example.demo.AcceptedOrders</value>
+   		</list>
+   		
+   	</property>
+   
+   	
+   </bean>	
+   
+   <bean id="ht" class="org.springframework.orm.hibernate5.HibernateTemplate" >
+   	<property name="sessionFactory" >
+   	<ref bean="sessionFactory" />
+   	</property>
+   </bean>
+   
+   <bean name="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+   <property name="sessionFactory" ref="sessionFactory" />
+   </bean>
+   
+ <!--   <bean id="jt1" class="org.springframework.jdbc.core.JdbcTemplate">
+   	<property name="dataSource">
+   		<ref bean="dmds" />
+   	</property>   	
+   </bean> -->
+ 
+
+	<bean id="udao" class="com.example.demo.UsersDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="sQdao" class="com.example.demo.SecretQuestionsDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="dTdao" class="com.example.demo.DressTypeDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="dCdao" class="com.example.demo.DressCategoryDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="tailorDressdao" class="com.example.demo.TailorDressDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="tailordao" class="com.example.demo.TailorDao">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="feedbackDao" class="com.example.demo.FeedbackDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="Adao" class="com.example.demo.AdminDao">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="orderDao" class="com.example.demo.OrderDao">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="AcceptedOrderddao" class="com.example.demo.AcceptedOrdersDao">
+		<property name="ht" ref="ht"></property>
+	</bean>
+   <!-- <bean id="bookingDAO" class="com.example.demo.BookingDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="helpdao" class="com.example.demo.HelpDeskDAO">
+		<property name="ht" ref="ht"></property>
+	</bean>
+	<bean id="fdao" class="com.example.demo.FeedbackDAO">
+		<property name="ht" ref="ht"></property>
+	</bean> -->
+</beans>
