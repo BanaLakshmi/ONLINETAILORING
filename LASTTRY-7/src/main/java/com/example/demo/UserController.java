@@ -99,6 +99,19 @@ public class UserController {
 		mv.setViewName("additionaldetails");
 		return mv;
 	}
+	@RequestMapping("/payment")
+	public ModelAndView payment() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("payment");
+		mv.addObject("message", "payment successfull");
+		return mv;
+	}
+	@RequestMapping("/submitDetails")
+	public ModelAndView submitDetails() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("ViewCustomerOrder");
+		return mv;
+	}
 	
 	@RequestMapping("tailordetails")
 	public ModelAndView tailordetails(String tailorId,HttpSession session) {
@@ -189,7 +202,8 @@ public class UserController {
 			throws NullPointerException, SQLException {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("bean.xml");
 		UsersDAO udao = (UsersDAO) ctx.getBean("udao");
-
+		AcceptedOrdersDao AcceptedOrderddao1 = (AcceptedOrdersDao)ctx.getBean("AcceptedOrderddao");
+		List<AcceptedOrders> byCustomerOrderByStatus = AcceptedOrderddao1.getByCustomerOrderByStatus(userId, "Completed Order");
 		ModelAndView mv = new ModelAndView();
 
 		Users user = udao.read(userId);
@@ -201,8 +215,24 @@ public class UserController {
 
 		else {
 			if (password.equals(user.getPassword())) {
-				mv.setViewName(user.getCategory());
-				session.setAttribute("user", user);
+				//mv.setViewName(user.getCategory());
+				//session.setAttribute("user", user);
+				if( !(byCustomerOrderByStatus.isEmpty())) {
+					
+					if(byCustomerOrderByStatus.get(0).getStatus().equalsIgnoreCase("Completed Order"))
+					{
+					
+					 mv.setViewName("feedback");
+					 
+					 byCustomerOrderByStatus.get(0).setStatus("finished");
+					  AcceptedOrderddao1.update(byCustomerOrderByStatus.get(0));
+					 return mv;
+						}
+					}
+				else {
+					mv.setViewName(user.getCategory());
+					session.setAttribute("user", user);
+				}
 			} else {
 				mv.setViewName("Login");
 				mv.addObject("message", "Password not matching");
@@ -212,7 +242,6 @@ public class UserController {
 		return mv;
 
 	}
-
 	@RequestMapping("/resetpass")
 	public String update() {
 		return "resetq";
@@ -752,7 +781,31 @@ public class UserController {
 		
 		return mv;
 	}
+	@RequestMapping("/feedback")
+    public ModelAndView home3()
+    {
+	    ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+    	FeedbackDAO feedback=(FeedbackDAO) ctx.getBean("feedbackDao");
+		List<Feedback> feed = feedback.read();
+        System.out.println(feed.size());
+		ModelAndView mv=new ModelAndView();
+		mv.addObject("date",LocalDate.now());
+	    mv.setViewName("feedback");
+	    mv.addObject("feed",feed);
+	    return mv;
+    }
 	
+	@RequestMapping("/addfeedback")
+	public ModelAndView addfeedback(Feedback feedbacks,HttpSession session)
+	{
+		ApplicationContext ctx=new ClassPathXmlApplicationContext("bean.xml");
+		FeedbackDAO feedbackDao=(FeedbackDAO) ctx.getBean("feedbackDao");		
+	    Feedback feedback1 =  feedbackDao.create(feedbacks);
+	    ModelAndView mv=new ModelAndView();
+	    	mv.setViewName("customer");		
+		   session.setAttribute("feedback", feedback1);	
+		return mv;
+	}
 
 	@RequestMapping("modifystatusoforder")
 	public ModelAndView modifystatus(Integer orderId, String status,HttpSession session) {
