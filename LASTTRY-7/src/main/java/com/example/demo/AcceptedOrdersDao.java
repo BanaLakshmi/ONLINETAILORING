@@ -5,6 +5,8 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,26 @@ public class AcceptedOrdersDao {
 		ht.save(acceptedOrders);
 		return acceptedOrders;
 	}
+	@Transactional
+	public int updateTailerStatusAccepted (int orderId,String status)
+	{  	System.out.println("the status is"+status );
+	System.out.println("\n");
+	System.out.println(orderId);
+		Session session=ht.getSessionFactory().openSession();
+		Transaction tx = session.beginTransaction();
+		Query query = session.createQuery("UPDATE AcceptedOrders a SET a.status=? WHERE a.orderId=?");
+		query.setParameter(0, status);
+		query.setParameter(1, orderId);
+		//Query query=session.createQuery("UPDATE AcceptedOrders SET status=? WHERE orderid=?");
+		//query.setParameter(0,status);
+		//query.setParameter(1,orderId);
+		//query.executeUpdate();
+		int no= query.executeUpdate();
+		tx.commit();
+		return no;
+		//session.close();
+	}
+	
 	public List<AcceptedOrders> read()
 	{
 		return ht.loadAll(AcceptedOrders.class);
@@ -62,35 +84,5 @@ public class AcceptedOrdersDao {
 		query.setParameter(0, tailorId);
 		List<AcceptedOrders> s = query.list();
 		return s;
-	}
-	public List<AcceptedOrders> getByOrderByStatus (String tailorId,String status)
-	{
-		Session session = ht.getSessionFactory().openSession();
-		Query query = session.createQuery("SELECT a From  AcceptedOrders a WHERE a.tailorId=? AND a.status=? ");
-		query.setParameter(0, tailorId);
-		query.setParameter(1, status);
-		List<AcceptedOrders> s = query.list();
-		return s;
-	}
-	public List<AcceptedOrders> getByCustomerOrderByStatus (String customerId,String status)
-	{
-		Session session = ht.getSessionFactory().openSession();
-		Query query = session.createQuery("SELECT a From  AcceptedOrders a WHERE a.customerId=? AND a.status=? ");
-		query.setParameter(0, customerId);
-		query.setParameter(1, status);
-		List<AcceptedOrders> s = query.list();
-		return s;
-	}
-	@Transactional
-	public int updatestatus(Integer orderId, String status) 	
-	{
-		Session session = ht.getSessionFactory().openSession();
-		Transaction tx = session.beginTransaction();
-		Query query = session.createQuery("UPDATE AcceptedOrders a SET a.status=? WHERE a.orderId=?");
-		query.setParameter(0, status);
-		query.setParameter(1, orderId);
-		int no= query.executeUpdate();
-		tx.commit();
-		return no;
 	}
 }
