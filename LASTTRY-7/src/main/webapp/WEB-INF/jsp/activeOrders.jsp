@@ -49,7 +49,7 @@
 <div class="inputfield">
 <label>Order Status</label><div class="custom_select"><select name="status" id="status" required>
               <option value="">Select</option>
-              <option value="Completed Order">Completed Order</option>
+              <option value="finished">Completed Order</option>
               <option value="Active Order">Active Order</option>
             </select>
             </div>
