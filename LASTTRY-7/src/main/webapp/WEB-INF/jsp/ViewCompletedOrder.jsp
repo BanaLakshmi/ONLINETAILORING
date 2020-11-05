@@ -22,7 +22,7 @@ View Completed Orders
 <div class="inputfield">
 <label></label><input type=hidden name=tailorId id=tailorId  value=${user.userId } class="input" readonly /></div>
 <div class="inputfield">
-<label></label><input type=hidden name=status id=status  value="Completed Order" class="input" readonly /></div>
+<label></label><input type=hidden name=status id=status  value="finished" class="input" readonly /></div>
 <div class="inputfield">
 <input type=submit value="View Completed Orders" class="btn" />
 </div>
