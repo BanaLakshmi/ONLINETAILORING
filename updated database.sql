@@ -4,8 +4,9 @@ CREATE TABLE `acceptedorders` (
   `tailorId` varchar(100) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   `expectedDate` date DEFAULT NULL,
+  `customerId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`acceptedOrdersId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `adminmaster` (
   `adminId` varchar(30) DEFAULT NULL,
@@ -16,7 +17,7 @@ CREATE TABLE `dresscategorymaster` (
   `categoryId` int NOT NULL AUTO_INCREMENT,
   `dressCategoery` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`categoryId`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `dresstypemaster` (
   `dressTypeId` int NOT NULL AUTO_INCREMENT,
@@ -59,7 +60,7 @@ CREATE TABLE `orders` (
   `deliveryArea` varchar(150) DEFAULT NULL,
   `tailorId` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`orderId`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `secretquestions` (
   `sqId` int NOT NULL AUTO_INCREMENT,
@@ -70,6 +71,7 @@ CREATE TABLE `secretquestions` (
   `a3` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`sqId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE `tailor` (
   `tailorId` varchar(50) NOT NULL,
