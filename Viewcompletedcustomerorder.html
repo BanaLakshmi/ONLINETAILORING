@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>View Orders</title>
+</head>
+<body>
+<h2>VIEW ORDERS HERE!!!</h2>
+
+
+
+<div class="wrapper">
+<div class="title">
+    </div>
+<div class="form">
+<form method="get" action="CustomerCompletedOrders">
+<div class="inputfield">
+<label></label><input type=hidden name=customerId id=customerId  value=${user.userId } class="input" readonly /></div>
+<div class="inputfield">
+<label></label><input type=hidden name=status id=status  value="finished" class="input" readonly /></div>
+<div class="inputfield">
+<input type=submit value="View Completed Orders" class="btn" />
+</div>
+</form>
+</div>
+</div>
+<p style="color:red;">${message }</p><br>
+<p style="color:yellow;">TO GO BACK TO CUSTOMER==>> <a href="customer" >  Go back to Customer </a></p><br>
+<p style="color:ORANGE;">LOGOUT HERE==>><a href="logout">Log Out</a>
+</body>
+<head>
+    <style type="text/css">
+    
+  
+ 
+    body
+    {
+
+              text-align= center;
+	      background-image: url("https://img.freepik.com/free-photo/orange-spool-thread-pins-buttons-sewing-wooden-black-background-copy-space_122732-1751.jpg?size=626&ext=jpg");
+	    color:#ffffff;
+	     font-family: "Times New Roman", Times, serif; 
+ width:25%;
+overflow: hidden;  
+  padding: 25px;
+margin: auto;
+
+  border: 5px solid #f26724 ;
+  border-radius: 25px;
+  box-sizing: border-box;
+  margin-top: 80px;
+  margin-bottom: 12px;
+          
+
+}
+h2{
+text-align="center";
+color:white;
+padding: 2px; 
+
+    
+}
+
+    
+
+
+           /* css code for button*/
+   .btn{width:220px; height:32px; outline:none; padding:5px; color:#f7f7f7; font-weight:bold; border:0px solid #f26724; 
+    text-shadow: 0px 0.5px 0.5px #fff; border-radius: 2px; font-weight: 600; color: #f26724; letter-spacing: 1px; 
+    font-size:14px; background-color:#f1f1f1; -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;}
+}
+  .btn:hover{background-color:#f26724; outline:none;  border-radius: 2px; color:#f1f1f1; border:1px solid #f1f1f1;
+    -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;
+    
+ }
+
+</head>
+</html>
