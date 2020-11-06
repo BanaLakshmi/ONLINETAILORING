@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Online Tailoring</title>
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</head>
+<body>
+<div class="wrapper">
+<div class="title">
+     <h2> FEEDBACK FORM</h2>
+    </div>
+<div class="form">
+<form method="get" action="addfeedback"> 
+
+<div class="inputfield">
+<label>orderId : </label><input type=text name=orderId id=orderId class="input"  value="${order.orderId }"required /></div>
+<div class="inputfield">
+<label>User Id : </label><input type=text name=userId id=userId class="input"  value="${user.userId }"required /></div>
+<div class="inputfield">
+<label>${qsn1} </label><input type=text name=answer1 id=answer1 class="input" required /></div>
+<div class="inputfield">
+<label>${qsn2} </label><input type=text name=answer2 id=answer2 class="input" required /></div>
+<div class="inputfield">
+<label>${qsn3} </label><input type=text name=answer3 id=answer3 class="input" required /></div>
+<div class="inputfield">
+<label>feedbackDate : </label><input  type=date name=feedbackDate id=feedbackDate class="input"  required  value="${date}"/></div>
+<div class="inputfield">
+<label>tailorId : </label><input type=text name=tailorId id=tailorId class="input" required /></div>
+<div class="inputfield">
+<label>Review Tailor Here : </label><input type=text name=answer4 id=answer4 class="input" required /></div>
+<div class="inputfield">
+<input type=submit value="submit" class="btn" />
+</div>
+</form>
+</div>
+<br/>
+ <br/>
+ <br/>
+  <br/>
+   <br/>
+    <br/>
+    
+     <br/>
+<p style="color:orange;">CLICK HERE TO GO BACK TO CUSTOMER==>><a href="customer">customer</a></p>
+</div>
+
+</body>
+<head>
+    <style type="text/css">
+    
+  
+ 
+    body
+    {
+
+              text-align= center;
+	      background-image: url("https://img.freepik.com/free-photo/orange-spool-thread-pins-buttons-sewing-wooden-black-background-copy-space_122732-1751.jpg?size=626&ext=jpg");
+	    color:#ffffff;
+	     font-family: "Times New Roman", Times, serif; 
+ width:25%;
+overflow: hidden;  
+  padding: 25px;
+margin: auto;
+
+  border: 5px solid #f26724 ;
+  border-radius: 25px;
+  box-sizing: border-box;
+  margin-top: 80px;
+  margin-bottom: 12px;
+          
+
+}
+h2{
+text-align="center";
+color:white;
+padding: 2px; 
+
+    
+}
+       
+      label{  
+    color:yellow;  
+    font-size: 17px;
+padding: 5px;  
+}  
+
+/*css for tab*/
+.input{height:20px; width:180px; border:3px solid #000000; color:#000000; font-weight:bold; border-left:5px solid #f7f7f7; opacity:0.9;}
+    
+     .input:focus{height:28px; border:1px solid #f26724; outline:none; border-left:5px solid #f7f7f7;}
+           /* css code for button*/
+   .btn{width:80px; height:32px; outline:none; padding:5px; color:#f7f7f7; font-weight:bold; border:0px solid #f26724; 
+    text-shadow: 0px 0.5px 0.5px #fff; border-radius: 2px; font-weight: 600; color: #f26724; letter-spacing: 1px; 
+    font-size:14px; background-color:#f1f1f1; -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;}
+}
+  .btn:hover{background-color:#f26724; outline:none;  border-radius: 2px; color:#f1f1f1; border:1px solid #f1f1f1;
+    -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;
+    
+ }
+
+</head>
+</html>
