@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<div class="wrapper">
+<div class="title">
+    </div>
+    <div>
+	<h2 text-align="center">CUSTOMER ORDERS </h2> 
+	<table border="1"; align="center">
+	<tr>
+	 <td style="background-color:orange;">  Tailor Id</td>
+           <td style="background-color:orange;"> Order Id</td>
+           <td style="background-color:orange;">Customer Id</td>
+	 <td style="background-color:orange;">Status</td>
+	<td style="background-color:orange;"> Expected Date of Delivery</td>
+	<td style="background-color:orange;"> Cost of Order</td>
+	<td style="background-color:orange;"> Address Where You need Delivery</td>
+	 
+		</tr><c:forEach var="s" items="${s}">
+<tr>
+<td style="background-color:orange;"> > ${s.tailorId}</td>
+<td style="background-color:orange;"> > <a href="displayOrderbyOrderId?orderId=${s.orderId}">${s.orderId}</a></td>
+<td style="background-color:orange;"> >${s.customerId}</td>
+	 <td style="background-color:orange;"> ${s.status}</td>
+	<td style="background-color:orange;">  ${s.expectedDate}</td>
+	<td style="background-color:orange;">  ${s.cost}</td>
+	<td style="background-color:orange;">  ${s.deliveryAddress}</td>
+</tr>
+
+</c:forEach>
+</table>
+</div>
+</div>
+<p style="color:yellow;">TO VIEW COMPLETED CUSTOMER ORDERS==>> <a href="ViewCompletedCustomerOrder" > View Other Orders </a></p><br>
+<br>
+</body>
+<head>
+    <style type="text/css">
+    
+  
+ 
+    body
+    {
+
+              text-align= center;
+	      background-image: url("https://img.freepik.com/free-photo/orange-spool-thread-pins-buttons-sewing-wooden-black-background-copy-space_122732-1751.jpg?size=626&ext=jpg");
+	    color:#ffffff;
+	     font-family: "Times New Roman", Times, serif; 
+ 
+
+
+  border: 5px solid #f26724 ;
+  border-radius: 25px;
+  box-sizing: border-box;
+  margin-top: 80px;
+  margin-bottom: 12px;
+          
+
+}
+h2{
+
+color:white;
+padding: 2px; 
+
+    
+}
+
+</head>
+</html>
