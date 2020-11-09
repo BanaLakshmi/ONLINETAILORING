@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<body>
+<br>
+
+<div>
+<h2> Tailor Details</h2>
+	<table border="1">
+		<tr>
+			<td style="background-color:orange;">Tailor ID</td>
+			<td style="background-color:orange;">ShopName</td>
+			<td style="background-color:orange;">Address</td>
+			<td style="background-color:orange;">Contact No.</td>
+			<td style="background-color:orange;">Working Hours</td>
+			<td style="background-color:orange;">Delivery Address</td>
+		</tr>
+			<tr>
+				<td style="background-color:black;">${tailor.tailorId }</td>
+				<td style="background-color:black;">${tailor.shopName }</td>
+				<td style="background-color:black;">${tailor.address }</td>
+				<td style="background-color:black;">${tailor.contactNo }</td>
+				<td style="background-color:black;">${tailor.workingHours }</td>
+				<td style="background-color:black;">${tailor.deliveryAddress }</td>
+			</tr>
+	</table></div>
+	<br>
+	<br>
+	<div>
+	<h2> Types Of Dresses</h2> 
+	<table border="1">
+	<tr>
+			<td style="background-color:orange;">Category</td>
+			<td style="background-color:orange;">DressType</td>
+			<td style="background-color:orange;">DressKind</td>
+			<td style="background-color:orange;">Cost</td>
+			<td style="background-color:orange;">Pattern Image</td>
+		</tr>
+<c:forEach var="s" items="${tailorDresses}">
+<tr>
+<td style="background-color:black;">${s.tailorId}</td>
+<td style="background-color:black;">${s.dressType}</td>
+<td style="background-color:black;">${s.dressKind}</td>
+<td style="background-color:black;">${s.cost}</td>
+<td style="background-color:black;"><img width="150" height="150" src="data:image/jpeg;base64,${s.pic1}" /></td>
+</tr>
+</c:forEach>
+</table>
+</div>
+
+<div>
+	<h2> Feedback(s)</h2>
+	<table border="1">
+	<tr>
+<td style="background-color:black;">Tailor Rating</td>
+<td style="background-color:black;">Dress Quality</td>
+<td style="background-color:black;">Dress Fit</td>
+</tr>
+	
+<c:forEach var="s" items="${feedbackList}">
+<tr>
+<td style="background-color:black;">${s.answer1}</td>
+<td style="background-color:black;">${s.answer2}</td>
+<td style="background-color:black;">${s.answer3}</td>
+</tr>
+</c:forEach>
+</table>
+<p style="color:yellow;">Click Here to go back to Customer Home Page==>><a href="customer" >  Go back to customer</a></p><br>
+
+<b text-align="center"; style="color:yellow;">LOGOUT HERE ====>>><a href="logout">Log Out</a></b><br>
+
+</div>
+</body>
+<head>
+    <style type="text/css">
+    
+  
+ 
+    body
+    {
+
+              text-align= center;
+	      background-image: url("https://cdn.hipwallpaper.com/i/23/51/3HlLrP.jpg");
+	    color:#ffffff;
+	     font-family: "Times New Roman", Times, serif; 
+	      width:45%;
+
+
+ 
+}
+h2{
+text-align: center;
+color:white;
+padding: 2px; 
+
+    
+
+}
+/* visited link */
+a:visited {
+ 
+   background-color: green;
+  color: yellow;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+  
+}
+
+/* mouse over link */
+a:hover {
+
+  color:hotpink;
+   background-color: red;
+  color: black;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+  
+}
+
+/* selected link */
+a:active {
+
+  
+   background-color: red;
+  color: white;
+  padding: 1em 1.5em;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  }
+   label{  
+    color:yellow;  
+    font-size: 17px;
+padding: 5px;  
+width: 140px;
+display: inline-block;
+}   
+
+/*css for tab*/
+.input{height:20px; width:170px; border:3px solid #000000; color:#000000; font-weight:bold; border-left:5px solid #f7f7f7; opacity:0.9;}
+    
+     .input:focus{height:28px; border:1px solid #f26724; outline:none; border-left:5px solid #f7f7f7;}
+           /* css code for button*/
+   .btn{width:180px; height:32px; outline:none; padding:5px; color:#f7f7f7; font-weight:bold; border:0px solid #f26724; 
+    text-shadow: 0px 0.5px 0.5px #fff; border-radius: 2px; font-weight: 600; color: #f26724; letter-spacing: 1px; 
+    font-size:14px; background-color:#f1f1f1; -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;}
+}
+  .btn:hover{background-color:#f26724; outline:none;  border-radius: 2px; color:#f1f1f1; border:1px solid #f1f1f1;
+    -webkit-transition: 1s; -moz-transition: 1s; transition: 1s;
+    
+ }
+     
+table {
+  border-spacing: 0.5rem;
+}
+td {
+  padding: 0.5rem;
+}
+
+
+
+</head>
+</html>
